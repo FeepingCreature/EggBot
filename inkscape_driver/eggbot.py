@@ -27,7 +27,7 @@ import time
 
 import cubicsuperpath
 import ebb_motion  # https://github.com/evil-mad/plotink    Requires version 0.2 or newer.
-import ebb_serial  # https://github.com/evil-mad/plotink
+# import ebb_serial  # https://github.com/evil-mad/plotink
 import eggbot_conf  # Some settings can be changed here.
 import inkex
 import plot_utils  # https://github.com/evil-mad/plotink
@@ -187,7 +187,7 @@ class EggBot(inkex.Effect):
         if self.options.tab in ['"Help"', '"options"', '"timing"']:
             pass
         else:
-            self.serialPort = ebb_serial.openPort()
+            self.serialPort = "test";
             if self.serialPort is None:
                 inkex.errormsg(gettext.gettext("Failed to connect to EggBot. :("))
 
@@ -238,7 +238,7 @@ class EggBot(inkex.Effect):
 
             if self.serialPort is not None:
                 ebb_motion.doTimedPause(self.serialPort, 10)  # Pause a moment for underway commands to finish...
-                ebb_serial.closePort(self.serialPort)
+                # ebb_serial.closePort(self.serialPort)
 
         self.svgDataRead = False
         self.UpdateSVGEggbotData(self.svg)
@@ -1004,7 +1004,8 @@ class EggBot(inkex.Effect):
                 ebb_motion.sendPenUp(self.serialPort, self.options.penUpDelay)
                 if self.options.penUpDelay > 15:
                     if self.options.tab != '"manual"':
-                        time.sleep(float(self.options.penUpDelay - 10) / 1000.0)  # pause before issuing next command
+                        pass
+                        #time.sleep(float(self.options.penUpDelay - 10) / 1000.0)  # pause before issuing next command
                 self.bPenIsUp = True
 
     def penDown(self):
@@ -1017,7 +1018,8 @@ class EggBot(inkex.Effect):
                 ebb_motion.sendPenDown(self.serialPort, self.options.penDownDelay)
                 if self.options.penUpDelay > 15:
                     if self.options.tab != '"manual"':
-                        time.sleep(float(self.options.penDownDelay - 10) / 1000.0)  # pause before issuing next command
+                        pass
+                        #time.sleep(float(self.options.penDownDelay - 10) / 1000.0)  # pause before issuing next command
 
     def engraverOff(self):
         # Note: we don't bother checking self.engraverIsOn -- turn it off regardless
@@ -1051,6 +1053,7 @@ class EggBot(inkex.Effect):
         # a timing range of 6000 - 30000 in units of 1/(12 MHz).
         # 1% corresponds to 20 us, or 240 units of 1/(12 MHz).
 
+        return
         int_temp = 240 * (self.options.penUpPosition + 25)
         ebb_serial.command(self.serialPort, 'SC,4,' + str(int_temp) + '\r')
 
@@ -1138,7 +1141,8 @@ class EggBot(inkex.Effect):
                     self.svgTotalDeltaY += yd
                     ebb_motion.doXYMove(self.serialPort, xd2, yd2, td)
                     if td > 50:
-                        time.sleep(float(td - 50) / 1000.0)  # pause before issuing next command
+                        pass
+                        # time.sleep(float(td - 50) / 1000.0)  # pause before issuing next command
 
                 n_delta_x -= xd
                 n_delta_y -= yd
